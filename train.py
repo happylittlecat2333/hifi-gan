@@ -170,7 +170,7 @@ def train(rank, a, h):
                     save_checkpoint(checkpoint_path,
                                     {'generator': (generator.module if h.num_gpus > 1 else generator).state_dict()})
                     checkpoint_path = "{}/do_{:08d}".format(a.checkpoint_path, steps)
-                    save_checkpoint(checkpoint_path, 
+                    save_checkpoint(checkpoint_path,
                                     {'mpd': (mpd.module if h.num_gpus > 1
                                                          else mpd).state_dict(),
                                      'msd': (msd.module if h.num_gpus > 1
@@ -219,7 +219,7 @@ def train(rank, a, h):
 
         scheduler_g.step()
         scheduler_d.step()
-        
+
         if rank == 0:
             print('Time taken for epoch {} is {} sec\n'.format(epoch + 1, int(time.time() - start)))
 
@@ -242,6 +242,7 @@ def main():
     parser.add_argument('--summary_interval', default=100, type=int)
     parser.add_argument('--validation_interval', default=1000, type=int)
     parser.add_argument('--fine_tuning', default=False, type=bool)
+    
 
     a = parser.parse_args()
 
@@ -269,3 +270,16 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+"""
+
+fine-tune:
+    CUDA_VISIBLE_DEVICES=0 python train.py \
+        --input_wavs_dir /home/xjl/Audio/Library/Models/MyFastSpeech2/preprocessed_data/LJSpeech_v3/wav \
+        --input_mels_dir /home/xjl/Audio/Library/Models/MyFastSpeech2/preprocessed_data/LJSpeech_v3/mel/normalize \ # or raw
+        --input_training_file dataset/LJSpeech_v3/training.txt \
+        --input_validation_file dataset/LJSpeech_v3/validation.txt \
+        --checkpoint_path pretrained_model/pretrained/LJ_V3/generator_v3 \
+        --config config_v3.json
+"""
