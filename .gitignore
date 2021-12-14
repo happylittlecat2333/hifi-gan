@@ -116,5 +116,5 @@ output/
 *.npy
 TextGrid/
 
-dataset/
-pretrained_model/
+dataset/*
+pretrained_model/*
